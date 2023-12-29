@@ -5,8 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,9 +19,11 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -37,7 +42,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CreateBizCard("2", "2", "2", "2")
+                    CreateBizCard()
                 }
             }
         }
@@ -45,14 +50,19 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CreateBizCard(name: String, company: String, phone: String, email: String) {
+fun CreateBizCard() {
+    CreateImageProfile()
+}
+
+@Composable
+private fun CreateImageProfile(modifier: Modifier = Modifier) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .fillMaxHeight(),
     ) {
         Card(
-            modifier = Modifier
+            modifier = modifier
                 .width(300.dp)
                 .height(200.dp)
                 .padding(16.dp),
@@ -62,22 +72,44 @@ fun CreateBizCard(name: String, company: String, phone: String, email: String) {
                 containerColor = Color.White,
             ),
         ) {
-            Surface(
-                modifier = Modifier
-                    .size(150.dp)
-                    .padding(5.dp),
-                shape = CircleShape,
-                border = BorderStroke(0.5.dp, Color.Black),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
-            {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = "profile_img",
-                    modifier = Modifier.size(135.dp),
-                    contentScale = ContentScale.Crop
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .height(300.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
+
+            ) {
+                ImgUser(modifier)
+                Divider(
+                    thickness = 1.dp,
+                    modifier = modifier
+                        .padding(5.dp)
+                        .fillMaxWidth(),
                 )
             }
+
         }
+    }
+}
+
+@Composable
+private fun ImgUser(modifier: Modifier) {
+    Surface(
+        modifier = modifier
+            .size(150.dp)
+            .padding(10.dp),
+        shape = CircleShape,
+        border = BorderStroke(0.5.dp, Color.Black),
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+    )
+    {
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            contentDescription = "profile_img",
+            modifier = modifier.size(135.dp),
+            contentScale = ContentScale.Crop
+        )
     }
 }
 
@@ -85,6 +117,6 @@ fun CreateBizCard(name: String, company: String, phone: String, email: String) {
 @Composable
 fun GreetingPreview() {
     AppCouseJetBizCardTheme {
-        CreateBizCard("2", "2", "2", "2")
+        CreateBizCard()
     }
 }
