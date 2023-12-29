@@ -22,6 +22,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,9 +88,35 @@ private fun CreateImageProfile(modifier: Modifier = Modifier) {
                         .padding(5.dp)
                         .fillMaxWidth(),
                 )
+                CreateInfo()
             }
 
         }
+    }
+}
+
+@Composable
+private fun CreateInfo() {
+    Column(modifier = Modifier.padding(5.dp)) {
+        Text(
+            text = "João da Silva",
+            //styles h4,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            text = "Android Development",
+            modifier = Modifier.padding(top = 5.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Text(
+            text = "@joaodematejr",
+            modifier = Modifier.padding(top = 5.dp),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
     }
 }
 
