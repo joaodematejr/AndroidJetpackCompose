@@ -1,11 +1,13 @@
 package com.demate.appcousejetbizcard
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -80,7 +83,7 @@ private fun CreateImageProfile(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
 
-            ) {
+                ) {
                 ImgUser(modifier)
                 Divider(
                     thickness = 1.dp,
@@ -89,10 +92,50 @@ private fun CreateImageProfile(modifier: Modifier = Modifier) {
                         .fillMaxWidth(),
                 )
                 CreateInfo()
+                Button(
+                    onClick = {
+                        Log.d("TAG", "CreateBizCard: ")
+                    },
+                    modifier = modifier
+                        .padding(15.dp)
+                        .fillMaxWidth(),
+                ) {
+                    Text(
+                        text = "Portfolio",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
             }
-
         }
     }
+}
+
+//@Preview(showBackground = true)
+@Composable
+fun Context() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .fillMaxHeight()
+            .padding(10.dp)
+    ) {
+        Surface(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize()
+                .fillMaxHeight(),
+            shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+            border = BorderStroke(0.5.dp, Color.Black),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Portofilo(data = listOf("Port", "Portfolio", "Portfolio", "Portfolio", "Portfolio"))
+        }
+    }
+}
+
+@Composable
+fun Portofilo(data: List<String>) {
+    Text(text = "Projects go here")
 }
 
 @Composable
