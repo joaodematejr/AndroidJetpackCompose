@@ -1,7 +1,6 @@
 package com.demate.appcousejetbizcard
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,6 +27,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,6 +62,9 @@ fun CreateBizCard() {
 
 @Composable
 private fun CreateImageProfile(modifier: Modifier = Modifier) {
+    val buttonClickState = remember {
+        mutableStateOf(false)
+    }
     Surface(
         modifier = modifier
             .fillMaxSize()
@@ -94,7 +99,7 @@ private fun CreateImageProfile(modifier: Modifier = Modifier) {
                 CreateInfo()
                 Button(
                     onClick = {
-                        Log.d("TAG", "CreateBizCard: ")
+                        buttonClickState.value = !buttonClickState.value
                     },
                     modifier = modifier
                         .padding(15.dp)
@@ -104,6 +109,13 @@ private fun CreateImageProfile(modifier: Modifier = Modifier) {
                         text = "Portfolio",
                         style = MaterialTheme.typography.bodyMedium,
                     )
+                }
+                if (buttonClickState.value) {
+                    Context()
+                } else {
+                    Box() {
+
+                    }
                 }
             }
         }
@@ -124,18 +136,27 @@ fun Context() {
                 .padding(10.dp)
                 .fillMaxSize()
                 .fillMaxHeight(),
-            shape = RoundedCornerShape(corner = CornerSize(15.dp)),
-            border = BorderStroke(0.5.dp, Color.Black),
+            shape = RoundedCornerShape(corner = CornerSize(5.dp)),
+            border = BorderStroke(0.1.dp, Color.Black),
             color = MaterialTheme.colorScheme.background
         ) {
-            Portofilo(data = listOf("Port", "Portfolio", "Portfolio", "Portfolio", "Portfolio"))
+            Portfolio(data = listOf("Port", "Portfolio", "Portfolio", "Portfolio", "Portfolio"))
         }
     }
 }
 
 @Composable
-fun Portofilo(data: List<String>) {
-    Text(text = "Projects go here")
+fun Portfolio(data: List<String>) {
+    LazyColumn {
+        items(data.size) { index ->
+            Text(
+                text = data[index],
+                modifier = Modifier.padding(5.dp),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
 }
 
 @Composable
