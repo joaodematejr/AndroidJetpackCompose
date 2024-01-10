@@ -5,9 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -113,9 +115,7 @@ private fun CreateImageProfile(modifier: Modifier = Modifier) {
                 if (buttonClickState.value) {
                     Context()
                 } else {
-                    Box() {
-
-                    }
+                    Box() {}
                 }
             }
         }
@@ -149,12 +149,23 @@ fun Context() {
 fun Portfolio(data: List<String>) {
     LazyColumn {
         items(data.size) { index ->
-            Text(
-                text = data[index],
-                modifier = Modifier.padding(5.dp),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            Card(
+                modifier = Modifier
+                    .padding(5.dp)
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(corner = CornerSize(5.dp)),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(15.dp)
+                ) {
+                    CreateImageProfile(modifier = Modifier.size(100.dp))
+                    Text(text = "Todo: ${data[index]}")
+                }
+
+            }
         }
     }
 }
