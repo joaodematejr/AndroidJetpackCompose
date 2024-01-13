@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.demate.appcousejetbizcard.ui.theme.AppCouseJetBizCardTheme
@@ -154,15 +155,27 @@ fun Portfolio(data: List<String>) {
                     .padding(5.dp)
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(corner = CornerSize(5.dp)),
+                elevation = CardDefaults.cardElevation(4.dp),
             ) {
                 Row(
                     modifier = Modifier
                         .padding(5.dp)
                         .background(MaterialTheme.colorScheme.surface)
                         .padding(15.dp)
+                        .fillMaxWidth(),
                 ) {
                     CreateImageProfile(modifier = Modifier.size(100.dp))
-                    Text(text = "Todo: ${data[index]}")
+                    Column(modifier = Modifier
+                        .padding(7.dp)
+                        .align(Alignment.CenterVertically)) {
+                        Text(text = data[index], fontWeight = FontWeight.Bold)
+                        Text(
+                            text = "A great project",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
                 }
 
             }
