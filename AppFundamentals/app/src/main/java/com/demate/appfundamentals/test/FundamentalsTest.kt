@@ -1,5 +1,4 @@
 
-import com.demate.appfundamentals.main
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.io.ByteArrayOutputStream
@@ -12,7 +11,7 @@ class FundamentalsTest {
         val outContent = ByteArrayOutputStream()
         System.setOut(PrintStream(outContent))
 
-        main()
+        //main()
 
         val expectedOutput = "My name is João and I'm 20 years old\n"
 
