@@ -2,11 +2,15 @@ package com.demate.appfundamentals
 
 fun main() {
 
-    //var mutable
-    //val immutable
+    /**
+     * Variables
+     * var: mutable
+     * val: immutable
+     * Best practice: use val as much as possible
+     */
 
-    //var name = "Kotlin"
-    //name = "Jonh"
-    val myName = "Kotlin"
-    println("Hello, $myName!!!")
+    val name: String = "João"
+    val age: Int = 20
+
+    println("My name is $name and I'm $age years old")
 }

@@ -1,5 +1,5 @@
-package com.demate.appfundamentals
 
+import com.demate.appfundamentals.main
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.io.ByteArrayOutputStream
@@ -8,23 +8,14 @@ import java.io.PrintStream
 class FundamentalsTest {
 
     @Test
-    fun `prints greeting with Kotlin`() {
+    fun `main prints correct name and age`() {
         val outContent = ByteArrayOutputStream()
         System.setOut(PrintStream(outContent))
 
         main()
 
-        assertEquals("Hello, Kotlin!!!\n", outContent.toString())
-    }
+        val expectedOutput = "My name is João and I'm 20 years old\n"
 
-    @Test
-    fun `prints greeting with different name`() {
-        val outContent = ByteArrayOutputStream()
-        System.setOut(PrintStream(outContent))
-
-        var name = "Java"
-        println("Hello, $name!!!")
-
-        assertEquals("Hello, Java!!!\n", outContent.toString())
+        assertEquals(expectedOutput, outContent.toString())
     }
 }
