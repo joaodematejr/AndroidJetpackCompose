@@ -8,7 +8,7 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.bendito" />
+                  <option name="appId" value="com.frameticket.coletor" />
                 </ConnectionSetting>
               </option>
               <option name="failureTypes">
