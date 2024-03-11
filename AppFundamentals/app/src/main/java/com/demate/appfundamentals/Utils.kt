@@ -155,7 +155,86 @@ fun main() {
     println("a2 / b2 = ${a2 / b2}")
     println("a2 % b2 = ${a2 % b2}")
 
-
     
+    /** LOOPS AND BRANCHING ...*/
 
+
+     /** if amount is equal to 1000, then you are welthy, else you are getting by just fine ...*/
+
+    val amount = 1000
+    if (amount == 1000) {
+        println("You are wealthy")
+    } else {
+        println("You are getting by just fine")
+    }
+
+    /** if amount is equal to 1000, then you are welthy, else if amount is greater than 1000, then you are very wealthy, else you are getting by just fine ...*/
+
+    val amount2 = 1000
+    if (amount2 == 1000) {
+        println("You are wealthy")
+    } else if (amount2 > 1000) {
+        println("You are very wealthy")
+    } else {
+        println("You are getting by just fine")
+    }
+
+    /** if amount is equal to 1000, then you are welthy, else if amount is greater than 1000, then you are very wealthy, else if amount is less than 1000, then you are getting by just fine ...*/
+
+    val amount3 = 1000
+    if (amount3 == 1000) {
+        println("You are wealthy")
+    } else if (amount3 > 1000) {
+        println("You are very wealthy")
+    } else if (amount3 < 1000) {
+        println("You are getting by just fine")
+    }
+
+    /** if amount is equal to 1000, then you are welthy, else if amount is greater than 1000, then you are very wealthy, else if amount is less than 1000, then you are getting by just fine, else you are broke ...*/
+
+    val amount4 = 1000
+    if (amount4 == 1000) {
+        println("You are wealthy")
+    } else if (amount4 > 1000) {
+        println("You are very wealthy")
+    } else if (amount4 < 1000) {
+        println("You are getting by just fine")
+    } else {
+        println("You are broke")
+    }
+
+
+    when (amount4) {
+        1000 -> println("You are wealthy")
+        in 1001..1000000 -> println("You are very wealthy")
+        else -> println("You are broke")
+    }
+
+    val amount5 = 1000
+    when (amount5) {
+        1000 -> println("You are wealthy")
+        in 1001..1000000 -> println("You are very wealthy")
+        else -> println("You are broke")
+    }
+
+
+    val amount6 = 1000
+    when (amount6) {
+        1000 -> println("You are wealthy")
+        in 1001..1000000 -> println("You are very wealthy")
+        else -> {
+            println("You are broke")
+            println("You are getting by just fine")
+        }
+    }
+
+    val amount7 = 1000
+    when (amount7) {
+        1000 -> println("You are wealthy")
+        !in 1001..1000000 -> println("You are very wealthy")
+        else -> {
+            println("You are broke")
+            println("You are getting by just fine")
+        }
+    }
 }
