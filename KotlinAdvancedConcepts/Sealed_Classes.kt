@@ -9,6 +9,10 @@ fun main() {
     Repository.error()
     getResult(result = Repository.getCurrentState())
 
+    Repository.anotherCustomeFailure()
+    getResult(result = Repository.getCurrentState())
+    Repository.customFailure()
+
 }
 
 object Repository {
@@ -32,6 +36,14 @@ object Repository {
         return loadState
     }
 
+    fun customFailure() {
+        loadState = Failure.AnotherCustomFailure(NullPointerException("Null pointer exception"))
+    }
+
+    fun anotherCustomeFailure() {
+        loadState = Failure.CustomerFailure(Exception("Customer failure"))
+    }
+
 }
 
 fun getResult(result: Result) {
@@ -47,6 +59,15 @@ fun getResult(result: Result) {
         is Loading -> println("Loading")
         is NotLoading -> println("Not Loading")
 
+        is Failure.AnotherCustomFailure -> {
+            println("Another Custom Failure")
+            println("Exception: ${result.exception}")
+        }
+        is Failure.CustomerFailure -> {
+            println("Customer Failure")
+            println("Exception: ${result.exception}")
+        }
+
         else -> println("Idle")
 
 
@@ -60,9 +81,17 @@ enum class Result {
 }
 */
 
-abstract class Result
+sealed class Result
 
-abstract class Success(val dataFetched: String?) : Result()
-abstract class Error(val exception: Exception) : Result()
+data class Success(val dataFetched: String?) : Result()
+data class Error(val exception: Exception) : Result()
 object NotLoading: Result()
 object Loading: Result()
+
+
+sealed class Failure: Result() {
+    data class CustomerFailure(val exception: Exception) : Failure()
+    data class AnotherCustomFailure(val exception: NullPointerException) : Failure()
+
+
+}
