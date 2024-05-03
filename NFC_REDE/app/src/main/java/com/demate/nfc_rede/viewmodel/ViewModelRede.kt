@@ -60,22 +60,6 @@ class ViewModelRede : ViewModel() {
     }
 
 
-    private val DEFAULT_KEY_NFC = byteArrayOf(
-        0xFF.toByte(),
-        0xFF.toByte(),
-        0xFF.toByte(),
-        0xFF.toByte(),
-        0xFF.toByte(),
-        0xFF.toByte()
-    )
-    private val YUZER_KEY_NFC = byteArrayOf(
-        0xAF.toByte(),
-        0x31.toByte(),
-        0x27.toByte(),
-        0x01.toByte(),
-        0xE8.toByte(),
-        0xD5.toByte()
-    )
 
     fun handleRead(context: Context) {
         redeNfc?.detectCards {
@@ -85,7 +69,7 @@ class ViewModelRede : ViewModel() {
                         for (block in 0 until 4) {
                             //val blockNumber = sector * 4 + block
                             println("Sector $sector, Block $block: ")
-                            redeNfc?.authenticateSector(MifareKeyType.A, YUZER_KEY_NFC, sector.toByte()) { authenticationResult ->
+                            redeNfc?.authenticateSector(MifareKeyType.A, null, sector.toByte()) { authenticationResult ->
                                 when (authenticationResult) {
                                     is MifareResult.Success -> {
                                         Toast.makeText(context, "AuthenticateSector Success: ${authenticationResult.toString()}", Toast.LENGTH_SHORT).show()
