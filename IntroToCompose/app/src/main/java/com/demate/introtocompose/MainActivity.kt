@@ -20,6 +20,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,6 +47,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp() {
+    val moneyCounter = remember {
+        mutableIntStateOf(0)
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFFE0E0E0)
@@ -54,28 +59,44 @@ fun MyApp() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "100,00", style = TextStyle(
+                text = "R$${moneyCounter.intValue}", style = TextStyle(
                     color = Color.DarkGray,
                     fontSize = 40.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
             )
             Spacer(modifier = Modifier.height(30.dp))
-            CreateCircle()
+            CreateCircle(
+                moneyCounter = moneyCounter.intValue,
+                updateMoneyCounter = { newMoneyCounter ->
+                    moneyCounter.intValue = newMoneyCounter
+                })
+
+            if (moneyCounter.intValue > 25) {
+                Text(
+                    text = "You are rich!", style = TextStyle(
+                        color = Color.DarkGray,
+                        fontSize = 40.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                )
+            }
         }
     }
 }
 
-@Preview
+//@Preview
 @Composable
-fun CreateCircle() {
-    var moneyCounter = 0
+fun CreateCircle(moneyCounter: Int = 0, updateMoneyCounter: (Int) -> Unit) {
+    //var moneyCounter by remember {
+    //    mutableIntStateOf(0)
+    //}
     Card(
         modifier = Modifier
             .padding(3.dp)
             .size(105.dp)
             .clickable {
-                moneyCounter = moneyCounter + 1
+                updateMoneyCounter(moneyCounter + 1)
             },
         shape = CircleShape,
         elevation = CardDefaults.cardElevation(4.dp)
