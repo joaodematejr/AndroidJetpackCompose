@@ -2,4 +2,6 @@
 <resources>
 
     <style name="Theme.JetApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.JetTrivia" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
