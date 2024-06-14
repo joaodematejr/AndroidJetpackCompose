@@ -15,8 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
-import com.demate.movieapp.MovieRow
+import com.demate.movieapp.model.Movie
+import com.demate.movieapp.model.getMovies
 import com.demate.movieapp.navagation.MovieScreens
+import com.demate.movieapp.widgets.MovieRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,14 +44,7 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun MainContent(
     navController: NavController,
-    movieList: List<String> = listOf(
-        "Avatar",
-        "300",
-        "Harry",
-        "Cross The Line",
-        "Life",
-        "Happy Feet",
-    ),
+    movieList: List<Movie> = getMovies(),
 ) {
     Column(
         modifier = Modifier.padding(vertical = 100.dp)
