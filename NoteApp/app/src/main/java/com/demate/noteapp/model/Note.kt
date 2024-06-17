@@ -1,13 +1,23 @@
 package com.demate.noteapp.model
 
-import java.util.Date
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.UUID
 
+
+@Entity(tableName = "notes_tbl")
 data class Note(
-    val id: UUID = UUID.randomUUID(),  //9888-10848-222222
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
+
+    @ColumnInfo(name = "note_title")
     val title: String,
+
+    @ColumnInfo(name = "note_description")
     val description: String,
-    //val entryDate: LocalDateTime = LocalDateTime.now()
-    val entryDate: String = Date().toString()
+
+    @ColumnInfo(name = "note_date")
+    val date: Long = System.currentTimeMillis()
 
 )

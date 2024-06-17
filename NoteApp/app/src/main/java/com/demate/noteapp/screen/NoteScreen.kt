@@ -14,8 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Notifications
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.demate.noteapp.R
 import com.demate.noteapp.data.NotesDataSource
 import com.demate.noteapp.model.Note
+import com.demate.noteapp.utils.formatDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,7 +108,7 @@ fun NoteScreen(
                     }
                 })
         }
-        Divider(modifier = Modifier.padding(10.dp))
+        HorizontalDivider(modifier = Modifier.padding(10.dp))
         LazyColumn {
             items(notes) { note ->
                 NoteRow(note = note, onNoteClicked = {
@@ -145,7 +146,7 @@ fun NoteRow(
             }) {
             Text(text = note.title, style = MaterialTheme.typography.titleMedium)
             Text(text = note.description)
-            Text(text = "11 de setembro de 2021", style = MaterialTheme.typography.titleSmall)
+            Text(text = formatDate(note.date), style = MaterialTheme.typography.titleSmall)
         }
 
     }
