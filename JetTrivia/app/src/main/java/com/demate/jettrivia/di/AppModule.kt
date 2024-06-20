@@ -1,6 +1,7 @@
 package com.demate.jettrivia.di
 
 import com.demate.jettrivia.network.QuestionApi
+import com.demate.jettrivia.repository.QuestionRepository
 import com.demate.jettrivia.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -13,9 +14,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Singleton
     @Provides
-    fun providerQuestionApi(): QuestionApi {
+    fun provideQuestionRepository(api: QuestionApi) = QuestionRepository(api)
+
+    @Singleton
+    @Provides
+    fun provideQuestionApi(): QuestionApi {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
