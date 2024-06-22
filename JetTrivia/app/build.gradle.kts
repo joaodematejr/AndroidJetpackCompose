@@ -78,15 +78,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
-    //Dagger - Hilt
-    implementation(libs.hilt.android)
-    //May need okkhttp also
-
-    // Dagger - Hilt
-    kapt(libs.hilt.android.compiler)
-    implementation(libs.androidx.hilt.lifecycle.viewmodel)
-    kapt(libs.androidx.hilt.compiler)
+    // Dagger Hilt
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
     //Retrofit
     implementation(libs.retrofit)
