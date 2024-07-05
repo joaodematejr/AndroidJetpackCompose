@@ -16,7 +16,11 @@ import com.demate.jetweatherforecast.model.Weather
 import com.demate.jetweatherforecast.widgets.MainScaffold
 
 @Composable
-fun MainScreen(navController: NavController, mainViewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(
+    navController: NavController,
+    mainViewModel: MainViewModel = hiltViewModel(),
+    city: String?
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -37,9 +41,3 @@ fun MainScreen(navController: NavController, mainViewModel: MainViewModel = hilt
         }
     }
 }
-
-
-
-
-
-

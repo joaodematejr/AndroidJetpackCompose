@@ -50,6 +50,9 @@ fun MainScaffold(weather: Weather, navController: NavController) {
         WeatherAppBar(
             title = weather.city.name + weather.city.country,
             navController = navController,
+            onAddActionClicked = {
+                //navController.navigate(WeatherScreens.SearchScreen.name)
+            }
             //icon = Icons.Default.ArrowBackIosNew
         ) {
             navController.popBackStack()
