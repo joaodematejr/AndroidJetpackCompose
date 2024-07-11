@@ -28,8 +28,8 @@ interface WeatherDao {
     }
 
     @Query("DELETE FROM fav_tbl")
-    suspend fun deleteAllFavorite(favorite: Favorite) {
-        deleteAllFavorite(favorite)
+    suspend fun deleteAllFavorite() {
+        deleteAllFavorite()
     }
 
     @Delete
