@@ -40,6 +40,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.demate.jetweatherforecast.R
 import com.demate.jetweatherforecast.model.Weather
 import com.demate.jetweatherforecast.model.WeatherItem
+import com.demate.jetweatherforecast.navigation.WeatherScreens
 import com.demate.jetweatherforecast.utils.formatDate
 import com.demate.jetweatherforecast.utils.formatDateTime
 import com.demate.jetweatherforecast.utils.formatDecimals
@@ -48,11 +49,11 @@ import com.demate.jetweatherforecast.utils.formatDecimals
 fun MainScaffold(weather: Weather, navController: NavController) {
     Scaffold(topBar = {
         WeatherAppBar(
-            title = weather.city.name + weather.city.country,
+            title = weather.city.name + ", " + weather.city.country,
             navController = navController,
             onAddActionClicked = {
-                //navController.navigate(WeatherScreens.SearchScreen.name)
-            }
+                navController.navigate(WeatherScreens.SearchScreen.name)
+            },
             //icon = Icons.Default.ArrowBackIosNew
         ) {
             navController.popBackStack()

@@ -1,5 +1,6 @@
 package com.demate.jetweatherforecast.screens.favorite
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.demate.jetweatherforecast.model.Favorite
@@ -23,7 +24,7 @@ class FavoriteViewModel @Inject constructor(private val repository: WeatherRepos
             repository.getFavoriteWeather().distinctUntilChanged()
                 .collect { listOfFav ->
                     if (listOfFav.isNotEmpty()) {
-
+                        Log.d("FavoriteViewModel", "Favorite List: $listOfFav")
                     } else {
                         _favList.value = listOfFav
                     }

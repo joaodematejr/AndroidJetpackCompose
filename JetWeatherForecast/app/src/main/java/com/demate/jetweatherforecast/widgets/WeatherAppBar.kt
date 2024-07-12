@@ -25,12 +25,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
@@ -38,8 +40,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.demate.jetweatherforecast.model.Favorite
 import com.demate.jetweatherforecast.navigation.WeatherScreens
+import com.demate.jetweatherforecast.screens.favorite.FavoriteViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,6 +54,7 @@ fun WeatherAppBar(
     isMainScreen: Boolean = true,
     elevation: Dp = 0.dp,
     navController: NavController,
+    favoriteViewModel: FavoriteViewModel = hiltViewModel(),
     onAddActionClicked: () -> Unit = {},
     onButtonClicked: () -> Unit = {}
 ) {
@@ -99,6 +105,32 @@ fun WeatherAppBar(
                         onButtonClicked.invoke()
                     }
                 )
+            }
+            if (isMainScreen) {
+                val isAlreadyFavorite =
+                    favoriteViewModel.favList.collectAsState().value.filter { item ->
+                        (item.city === title.split(",")[0] && item.country === title.split(",")[1])
+                    }
+                if (isAlreadyFavorite.isNotEmpty()) {
+                    Icon(
+                        imageVector = Icons.Default.FavoriteBorder, contentDescription = "favorite",
+                        modifier = Modifier
+                            .scale(0.9f)
+                            .clickable {
+                                val dataList = title.split(",")
+                                favoriteViewModel.insertFavorite(
+                                    Favorite(
+                                        city = dataList[0], //city
+                                        country = dataList[1] // country
+                                    )
+                                )
+                            },
+                        tint = Color.Red
+                    )
+                } else {
+
+                }
+
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(),

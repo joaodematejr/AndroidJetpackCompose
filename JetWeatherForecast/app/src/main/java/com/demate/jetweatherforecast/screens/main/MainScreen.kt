@@ -29,7 +29,7 @@ fun MainScreen(
         val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
             initialValue = DataOrException(loading = true)
         ) {
-            value = mainViewModel.getWeatherData(city = "Florianopolis")
+            value = mainViewModel.getWeatherData(city = "Florianopolis, BR")
         }.value
 
         if (weatherData.loading == true) {
