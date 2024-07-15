@@ -1,5 +1,7 @@
 package com.demate.jetweatherforecast.widgets
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -35,9 +37,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,7 +54,6 @@ fun WeatherAppBar(
     title: String,
     icon: ImageVector? = null,
     isMainScreen: Boolean = true,
-    elevation: Dp = 0.dp,
     navController: NavController,
     favoriteViewModel: FavoriteViewModel = hiltViewModel(),
     onAddActionClicked: () -> Unit = {},
@@ -62,6 +63,12 @@ fun WeatherAppBar(
     val showDialog = remember {
         mutableStateOf(false)
     }
+
+    val showIt = remember {
+        mutableStateOf(false)
+    }
+
+    val context = LocalContext.current
 
     if (showDialog.value) {
         ShowSettingDropDownMenu(showDialog = showDialog, navController = navController)
@@ -118,24 +125,37 @@ fun WeatherAppBar(
                             .scale(0.9f)
                             .clickable {
                                 val dataList = title.split(",")
-                                favoriteViewModel.insertFavorite(
-                                    Favorite(
-                                        city = dataList[0], //city
-                                        country = dataList[1] // country
+                                favoriteViewModel
+                                    .insertFavorite(
+                                        Favorite(
+                                            city = dataList[0], //city
+                                            country = dataList[1] // country
+                                        )
                                     )
-                                )
+                                    .run {
+                                        showIt.value = true
+                                    }
                             },
                         tint = Color.Red
                     )
                 } else {
-
+                    showIt.value = false
+                    Box {}
                 }
-
             }
+
+            ShowToast(context = context, showIt)
         },
         colors = TopAppBarDefaults.topAppBarColors(),
         //elevation = elevation
     )
+}
+
+@Composable
+fun ShowToast(context: Context, showIt: MutableState<Boolean>) {
+    if (showIt.value) {
+        Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT).show()
+    }
 }
 
 @Composable
@@ -158,7 +178,7 @@ fun ShowSettingDropDownMenu(showDialog: MutableState<Boolean>, navController: Na
                 .width(140.dp)
                 .background(Color.White)
         ) {
-            items.forEachIndexed { index, text ->
+            items.forEachIndexed { _, text ->
                 DropdownMenuItem(text = {
                     Icon(
                         imageVector = when (text) {

@@ -46,7 +46,7 @@ import com.demate.jetweatherforecast.utils.formatDateTime
 import com.demate.jetweatherforecast.utils.formatDecimals
 
 @Composable
-fun MainScaffold(weather: Weather, navController: NavController) {
+fun MainScaffold(weather: Weather, navController: NavController, isImperial: Boolean) {
     Scaffold(topBar = {
         WeatherAppBar(
             title = weather.city.name + ", " + weather.city.country,
@@ -60,12 +60,12 @@ fun MainScaffold(weather: Weather, navController: NavController) {
         }
     }) {
         it.calculateBottomPadding()
-        MainContent(data = weather)
+        MainContent(data = weather, isImperial = isImperial)
     }
 }
 
 @Composable
-fun MainContent(data: Weather) {
+fun MainContent(data: Weather, isImperial: Boolean) {
     //https://openweathermap.org/img/w/04d.png
     val imageUrl = "https://openweathermap.org/img/w/${data.list.first().weather.first().icon}.png"
     Column(
@@ -108,7 +108,7 @@ fun MainContent(data: Weather) {
                 )
             }
         }
-        HumidityWindPressureRow(weather = data.list.first())
+        HumidityWindPressureRow(weather = data.list.first(), isImperial = isImperial)
         HorizontalDivider()
         SunsetSunriseRow(weather = data.list.first())
         Text(
@@ -236,7 +236,7 @@ fun SunsetSunriseRow(weather: WeatherItem) {
 }
 
 @Composable
-fun HumidityWindPressureRow(weather: WeatherItem) {
+fun HumidityWindPressureRow(weather: WeatherItem, isImperial: Boolean) {
     Row(
         modifier = Modifier
             .padding(22.dp)
@@ -273,7 +273,7 @@ fun HumidityWindPressureRow(weather: WeatherItem) {
                 modifier = Modifier.size(24.dp)
             )
             Text(
-                text = weather.humidity.toString() + "%",
+                text = weather.speed.toString() + "mph" + if (isImperial) "mph" else "m/s",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
