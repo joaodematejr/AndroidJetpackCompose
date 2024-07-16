@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "486521263187",
+    "project_id": "jetareader-4e2d0",
+    "storage_bucket": "jetareader-4e2d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486521263187:android:559c5e8641e7d7210162a6",
+        "android_client_info": {
+          "package_name": "com.demate.jetareader"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-E0KZp_Q1qgKKXkNG-l4_Wib64o-0sQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
