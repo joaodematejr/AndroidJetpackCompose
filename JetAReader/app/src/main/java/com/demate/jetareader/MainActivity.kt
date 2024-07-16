@@ -32,7 +32,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ReaderApp() {
-    Surface(color = MaterialTheme.colorScheme.onBackground,
+    Surface(
+        color = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize(), content = {
             Column(
                 verticalArrangement = Arrangement.Center,
