@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
     id("kotlin-kapt")
-    id("com.google.devtools.ksp")
 }
 
 android {
@@ -75,28 +74,28 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
     //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.39")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
-    // Dagger - Hilt
-    kapt("com.google.dagger:hilt-android-compiler:2.39")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0-alpha03")
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    //kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     //material icons - use with caution!
-    implementation("androidx.compose.material:material-icons-extended:1.0.4")
+    //implementation(libs.androidx.material.icons.extended)
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
+    //implementation(libs.kotlinx.coroutines.android)
+    //implementation(libs.kotlinx.coroutines.core)
+    //implementation(libs.kotlinx.coroutines.play.services)
     // Coroutine Lifecycle Scopes
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+    //implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    //lifecycle
+    //implementation(libs.androidx.lifecycle.runtime.ktx)
     // Coil
-    implementation("io.coil-kt:coil-compose:1.4.0")
+    implementation(libs.coil.compose)
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation(libs.retrofit)
     // OkHttp
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    implementation(libs.okhttp)
     // JSON Converter
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.converter.gson)
+}
+
+kapt {
+    correctErrorTypes = true
 }
