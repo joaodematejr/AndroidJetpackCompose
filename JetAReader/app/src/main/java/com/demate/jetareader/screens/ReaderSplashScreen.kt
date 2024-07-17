@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.demate.jetareader.components.ReaderLogo
 import com.demate.jetareader.navigation.ReaderScreens
 import kotlinx.coroutines.delay
 
@@ -56,10 +57,7 @@ fun ReaderSplashScreen(navController: NavHostController) {
             modifier = Modifier.padding(1.dp), horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "JetaReader", style = MaterialTheme.typography.bodyLarge,
-                color = Color.Red.copy(alpha = 0.8f)
-            )
+            ReaderLogo()
             Spacer(modifier = Modifier.height(15.dp))
             Text(
                 text = "\"Loading...\"", style = MaterialTheme.typography.bodyMedium,

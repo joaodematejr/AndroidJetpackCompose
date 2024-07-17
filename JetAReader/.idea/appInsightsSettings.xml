@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.demate.jetareader" />
+                  <option name="mobileSdkAppId" value="1:486521263187:android:559c5e8641e7d7210162a6" />
+                  <option name="projectId" value="jetareader-4e2d0" />
+                  <option name="projectNumber" value="486521263187" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
