@@ -1,6 +1,5 @@
 package com.demate.jetareader.screens.login
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,14 +32,19 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.demate.jetareader.R
 import com.demate.jetareader.components.EmailInput
 import com.demate.jetareader.components.PasswordInput
 import com.demate.jetareader.components.ReaderLogo
+import com.demate.jetareader.navigation.ReaderScreens
 
 @Composable
-fun ReaderLoginScreen(navController: NavHostController) {
+fun ReaderLoginScreen(
+    navController: NavHostController,
+    viewModel: LoginScreenViewModel = viewModel()
+) {
     val showLoginForm = rememberSaveable { mutableStateOf(true) }
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -53,16 +57,18 @@ fun ReaderLoginScreen(navController: NavHostController) {
                     loading = false,
                     isCreateAccount = false
                 ) { email, password ->
-                    //TODO FB LOGIN
-                    Log.d("ReaderLoginScreen", "Email: $email, Password: $password")
+                    viewModel.singInWithEmailAndPassword(email, password) {
+                        navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+                    }
                 }
             } else {
                 UserForm(
                     loading = false,
                     isCreateAccount = true
                 ) { email, password ->
-                    //TODO CREATE FB ACCOUNT
-                    Log.d("ReaderLoginScreen", "Email: $email, Password: $password")
+                    viewModel.createUserWithEmailAndPassword(email, password) {
+                        navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+                    }
                 }
             }
         }
