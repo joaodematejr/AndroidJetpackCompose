@@ -1,9 +1,15 @@
 package com.demate.jetareader.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +20,9 @@ import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -30,6 +39,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,9 +49,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import com.demate.jetareader.model.MBook
 import com.demate.jetareader.navigation.ReaderScreens
 import com.google.firebase.auth.FirebaseAuth
 
@@ -71,6 +85,38 @@ fun EmailInput(
         imeAction = imeAction,
         onAction = onAction
     )
+
+}
+
+@Composable
+fun InputField(
+    modifier: Modifier = Modifier,
+    valueState: MutableState<String>,
+    labelId: String,
+    enabled: Boolean,
+    isSingleLine: Boolean = true,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Next,
+    onAction: KeyboardActions = KeyboardActions.Default
+) {
+
+    OutlinedTextField(
+        value = valueState.value,
+        onValueChange = { valueState.value = it },
+        label = { Text(text = labelId) },
+        singleLine = isSingleLine,
+        textStyle = TextStyle(
+            fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onBackground
+        ),
+        modifier = modifier
+            .padding(bottom = 10.dp, start = 10.dp, end = 10.dp)
+            .fillMaxWidth(),
+        enabled = enabled,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
+        keyboardActions = onAction
+    )
+
 
 }
 
@@ -166,8 +212,10 @@ fun TitleSection(modifier: Modifier = Modifier, label: String) {
 @Composable
 fun ReaderAppBar(
     title: String,
+    icon: ImageVector? = null,
     showProfile: Boolean = true,
-    navController: NavController
+    navController: NavController,
+    onBackArrowClicked: () -> Unit = {}
 ) {
     TopAppBar(title = {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -178,6 +226,14 @@ fun ReaderAppBar(
                     modifier = Modifier
                         .clip(RoundedCornerShape(50.dp))
                         .scale(0.5f)
+                )
+            }
+            if (icon != null) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = "Back",
+                    tint = Color.Green.copy(alpha = 0.8f),
+                    modifier = Modifier.clickable { onBackArrowClicked.invoke() }
                 )
             }
             Text(
@@ -192,11 +248,13 @@ fun ReaderAppBar(
             FirebaseAuth.getInstance().signOut()
                 .run { navController.navigate(ReaderScreens.LoginScreen.name) }
         }) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.Logout,
-                contentDescription = "Logout",
-                tint = Color.Green.copy(alpha = 0.8f)
-            )
+            if (showProfile) Row() {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Logout,
+                    contentDescription = "Logout",
+                    tint = Color.Green.copy(alpha = 0.8f)
+                )
+            } else Box() { }
         }
     })
 
@@ -218,6 +276,133 @@ fun FABContent(onTap: () -> Unit) {
             contentDescription = "Add",
             tint = MaterialTheme.colorScheme.onSecondary
         )
+    }
+}
+
+@Composable
+fun BookRating(score: Double = 3.5) {
+    Surface(
+        modifier = Modifier
+            .height(70.dp)
+            .padding(4.dp),
+        shape = RoundedCornerShape(10.dp),
+        color = Color.Gray,
+        shadowElevation = 4.dp,
+        tonalElevation = 4.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(4.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Star,
+                contentDescription = "Rating",
+                modifier = Modifier.padding(4.dp)
+            )
+            Text(
+                text = score.toString(),
+                style = TextStyle(fontWeight = FontWeight.Bold)
+            )
+        }
+    }
+}
+
+@Composable
+fun RounderButton(
+    label: String = "Reading",
+    radius: Int = 29,
+    onPress: () -> Unit = {}
+) {
+    Surface(
+        modifier = Modifier.clip(
+            RoundedCornerShape(
+                bottomEndPercent = radius,
+                topStartPercent = radius,
+            ),
+        ),
+        color = Color.Blue,
+        onClick = { /*TODO*/ }) {
+        Column(
+            modifier = Modifier
+                .width(90.dp)
+                .heightIn(40.dp)
+                .clickable {
+                    onPress.invoke()
+                },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = label, style = TextStyle(color = Color.White, fontSize = 15.sp))
+        }
+
+    }
+}
+
+
+@Composable
+fun ListCard(
+    book: MBook,
+    onPressDetails: (String) -> Unit = {}
+) {
+    val context = LocalContext.current
+    val resources = context.resources
+    val displayMetrics = resources.displayMetrics
+    val screenWidth = displayMetrics.widthPixels / displayMetrics.density
+    val spacing = 10.dp
+    Card(
+        shape = RoundedCornerShape(29.dp),
+        modifier = Modifier
+            .padding(15.dp)
+            .height(240.dp)
+            .width(202.dp)
+            .clickable { book.title?.let { onPressDetails.invoke(it) } }
+    ) {
+        Column(
+            modifier = Modifier.width(screenWidth.dp - (spacing * 2)),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Row(horizontalArrangement = Arrangement.Center) {
+                Image(
+                    painter = rememberAsyncImagePainter(model = ""),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .height(140.dp)
+                        .width(100.dp)
+                        .padding(4.dp)
+                )
+                Spacer(modifier = Modifier.width(50.dp))
+                Column(
+                    modifier = Modifier.padding(top = 25.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Favorite,
+                        contentDescription = "Favorite",
+                        modifier = Modifier.padding(bottom = 1.dp),
+                    )
+                    BookRating(score = 3.5)
+                }
+            }
+            Text(
+                text = book.title!!,
+                style = TextStyle(fontWeight = FontWeight.Bold),
+                modifier = Modifier.padding(4.dp),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = book.author!!,
+                modifier = Modifier.padding(4.dp),
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.Bottom,
+        ) {
+            RounderButton(label = "Reading", radius = 70, onPress = {})
+        }
     }
 }
 

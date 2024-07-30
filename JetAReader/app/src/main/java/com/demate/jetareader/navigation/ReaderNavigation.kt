@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.demate.jetareader.screens.ReaderSplashScreen
 import com.demate.jetareader.screens.home.Home
 import com.demate.jetareader.screens.login.ReaderLoginScreen
+import com.demate.jetareader.screens.search.ReaderBookSearchScreen
 import com.demate.jetareader.screens.stats.ReaderStatsScreen
 
 @Composable
@@ -27,6 +28,10 @@ fun ReaderNavigation() {
 
         composable(ReaderScreens.ReaderStatsScreen.name) {
             ReaderStatsScreen(navController = navController)
+        }
+
+        composable(ReaderScreens.SearchScreen.name) {
+            ReaderBookSearchScreen(navController = navController)
         }
 
 
