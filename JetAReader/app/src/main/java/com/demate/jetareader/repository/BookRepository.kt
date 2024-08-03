@@ -1,6 +1,7 @@
 package com.demate.jetareader.repository
 
 import com.demate.jetareader.data.DataOrException
+import com.demate.jetareader.data.Resource
 import com.demate.jetareader.model.Item
 import com.demate.jetareader.network.BooksApi
 import javax.inject.Inject
@@ -9,30 +10,27 @@ class BookRepository @Inject constructor(private val booksApi: BooksApi) {
     private val dataOrException = DataOrException<List<Item>, Boolean, Exception>()
     private val bookInfoDataOrException = DataOrException<Item, Boolean, Exception>()
 
-    suspend fun getAllBooks(searchQuery: String): DataOrException<List<Item>, Boolean, Exception> {
-        try {
-            dataOrException.loading = true
-            dataOrException.data = booksApi.getAllBooks(searchQuery).items
-            if (dataOrException.data!!.isEmpty()) dataOrException.loading = false
 
-        } catch (e: Exception) {
-            dataOrException.e = e
+    suspend fun getAllBooks(searchQuery: String): Resource<List<Item>> {
+        return try {
+            Resource.Loading(data = "Loading...")
+            val itemList = booksApi.getAllBooks(searchQuery).items
+            if (itemList.isNotEmpty()) Resource.Loading(data = false)
+            Resource.Success(data = itemList)
+        } catch (exception: Exception) {
+            Resource.Error(message = exception.message)
         }
-        return dataOrException
     }
 
-    suspend fun getBookInfo(bookId: String): DataOrException<Item, Boolean, Exception> {
+    suspend fun getBookInfo(bookId: String): Resource<Item> {
         val response = try {
-            bookInfoDataOrException.loading = true
-            bookInfoDataOrException.data = booksApi.getBook(bookId)
-            if (bookInfoDataOrException.data.toString()
-                    .isNotEmpty()
-            ) bookInfoDataOrException.loading = false
-            else {
-            }
-        } catch (e: Exception) {
-            bookInfoDataOrException.e = e
+            Resource.Loading(data = "Loading...")
+            booksApi.getBook(bookId)
+        } catch (exception: Exception) {
+            return Resource.Error(message = exception.message)
+
         }
-        return bookInfoDataOrException
+        Resource.Loading(data = false)
+        return Resource.Success(data = response)
     }
 }
