@@ -26,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -43,10 +44,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.demate.jetareader.components.InputField
+import com.demate.jetareader.components.RatingBar
 import com.demate.jetareader.components.ReaderAppBar
+import com.demate.jetareader.components.RounderButton
 import com.demate.jetareader.data.DataOrException
 import com.demate.jetareader.model.MBook
 import com.demate.jetareader.screens.home.HomeScreenViewModel
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun BookUpdateScreen(
@@ -149,6 +154,9 @@ fun ShowSimpleForm(book: MBook, navController: NavHostController) {
     val isFinishedReading = remember {
         mutableStateOf(false)
     }
+    val ratingVal = remember {
+        mutableIntStateOf(0)
+    }
     SimpleForm(
         defaultValue = if (book.notes.toString().isNotEmpty()) book.notes.toString() else ""
     ) {
@@ -209,6 +217,47 @@ fun ShowSimpleForm(book: MBook, navController: NavHostController) {
             }
 
         }
+        Text(text = "Rating", modifier = Modifier.padding(bottom = 3.dp))
+        book.rating?.toInt().let {
+            RatingBar(rating = it!!) { rating ->
+                ratingVal.intValue = rating
+                Log.d("TAG", "ShowSimpleForm: ${ratingVal.intValue}")
+            }
+        }
+    }
+    Spacer(modifier = Modifier.padding(bottom = 15.dp))
+    Row(horizontalArrangement = Arrangement.SpaceBetween) {
+        val changedNotes = book.notes != notesText.value
+        val changedRating = book.rating?.toInt() != ratingVal.intValue
+        val isFinishedTimeStamp =
+            if (isFinishedReading.value) Timestamp.now() else book.finishedReading
+        val isStartedTimeStamp =
+            if (isStartedReading.value) Timestamp.now() else book.startedReading
+
+        val bookUpdate =
+            changedNotes || changedRating || isStartedReading.value || isFinishedReading.value
+
+        val bookToUpdate = hashMapOf(
+            "finished_reading_at" to isFinishedTimeStamp,
+            "started_reading_at" to isStartedTimeStamp,
+            "rating" to ratingVal.intValue,
+            "notes" to notesText.value
+        ).toMap()
+
+        RounderButton(label = "Update") {
+            if (bookUpdate) {
+                FirebaseFirestore.getInstance().collection("books").document(book.id.toString())
+                    .update(bookToUpdate).addOnCompleteListener {
+                        Log.d("TAG", "ShowSimpleForm: Updated")
+                    }.addOnFailureListener {
+                        Log.d("TAG", "ShowSimpleForm: ${it.message}")
+                    }
+            }
+            navController.popBackStack()
+
+        }
+        Spacer(modifier = Modifier.width(100.dp))
+        RounderButton(label = "Delete")
     }
 }
 
