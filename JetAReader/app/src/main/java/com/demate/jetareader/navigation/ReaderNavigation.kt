@@ -2,15 +2,21 @@ package com.demate.jetareader.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.demate.jetareader.screens.ReaderSplashScreen
+import com.demate.jetareader.screens.details.BookDetailsScreen
 import com.demate.jetareader.screens.home.Home
+import com.demate.jetareader.screens.home.HomeScreenViewModel
 import com.demate.jetareader.screens.login.ReaderLoginScreen
 import com.demate.jetareader.screens.search.BooksSearchViewModel
 import com.demate.jetareader.screens.search.ReaderBookSearchScreen
 import com.demate.jetareader.screens.stats.ReaderStatsScreen
+import com.demate.jetareader.screens.update.BookUpdateScreen
+
 
 @Composable
 fun ReaderNavigation() {
@@ -25,7 +31,8 @@ fun ReaderNavigation() {
         }
 
         composable(ReaderScreens.ReaderHomeScreen.name) {
-            Home(navController = navController)
+            val homeViewModel = hiltViewModel<HomeScreenViewModel>()
+            Home(navController = navController, viewModel = homeViewModel)
         }
 
         composable(ReaderScreens.ReaderStatsScreen.name) {
@@ -37,6 +44,22 @@ fun ReaderNavigation() {
             ReaderBookSearchScreen(navController = navController, viewModel = searchViewModel)
         }
 
+        val detailsName = ReaderScreens.DetailScreen.name
+        composable("$detailsName/{bookId}", arguments = listOf(navArgument("bookId") {
+            type = NavType.StringType
+        })) { backStackEntry ->
+            backStackEntry.arguments?.getString("bookId")?.let { bookId ->
+                BookDetailsScreen(navController = navController, bookId = bookId)
+            }
+        }
 
+        val updateName = ReaderScreens.UpdateScreen.name
+        composable("$updateName/{bookItemId}", arguments = listOf(navArgument("bookItemId") {
+            type = NavType.StringType
+        })) { backStackEntry ->
+            backStackEntry.arguments?.getString("bookItemId")?.let { bookItemId ->
+                BookUpdateScreen(navController = navController, bookItemId = bookItemId)
+            }
+        }
     }
 }

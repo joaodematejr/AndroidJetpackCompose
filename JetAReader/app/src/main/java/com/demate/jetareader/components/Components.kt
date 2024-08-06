@@ -311,7 +311,7 @@ fun BookRating(score: Double = 3.5) {
 fun RounderButton(
     label: String = "Reading",
     radius: Int = 29,
-    onPress: () -> Unit = {}
+    onPress: @Composable () -> Unit = {}
 ) {
     Surface(
         modifier = Modifier.clip(
@@ -327,7 +327,7 @@ fun RounderButton(
                 .width(90.dp)
                 .heightIn(40.dp)
                 .clickable {
-                    onPress.invoke()
+                    //onPress.invoke()
                 },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -363,7 +363,7 @@ fun ListCard(
         ) {
             Row(horizontalArrangement = Arrangement.Center) {
                 Image(
-                    painter = rememberAsyncImagePainter(model = ""),
+                    painter = rememberAsyncImagePainter(model = book.photoUrl.toString()),
                     contentDescription = "",
                     modifier = Modifier
                         .height(140.dp)
@@ -392,7 +392,7 @@ fun ListCard(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = book.author!!,
+                text = book.title!!,
                 modifier = Modifier.padding(4.dp),
                 style = MaterialTheme.typography.bodyLarge
             )

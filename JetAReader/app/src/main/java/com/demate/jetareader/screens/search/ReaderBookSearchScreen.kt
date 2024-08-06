@@ -29,7 +29,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -45,7 +44,6 @@ import com.demate.jetareader.model.Item
 import com.demate.jetareader.navigation.ReaderScreens
 
 
-@ExperimentalComposeUiApi
 @Composable
 fun ReaderBookSearchScreen(
     navController: NavController,

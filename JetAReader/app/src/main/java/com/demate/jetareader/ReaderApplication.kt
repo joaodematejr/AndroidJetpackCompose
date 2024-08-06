@@ -1,7 +1,7 @@
 package com.demate.jetareader
 
 import android.app.Application
-import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.HiltAndroidApp
 
-@HiltViewModel
+@HiltAndroidApp
 class ReaderApplication : Application() {}

@@ -83,9 +83,9 @@ dependencies {
     //material icons - use with caution!
     implementation(libs.androidx.material.icons.extended)
     // Coroutines
-    //implementation(libs.kotlinx.coroutines.android)
-    //implementation(libs.kotlinx.coroutines.core)
-    //implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.play.services)
     // Coroutine Lifecycle Scopes
     //implementation(libs.androidx.lifecycle.viewmodel.ktx)
     //lifecycle

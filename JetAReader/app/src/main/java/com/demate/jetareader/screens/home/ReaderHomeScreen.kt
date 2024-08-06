@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.demate.jetareader.components.FABContent
 import com.demate.jetareader.components.ListCard
@@ -38,29 +39,18 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun HomeContent(navController: NavController) {
-    val listOfBooks = listOf<MBook>(
-        MBook("1", "Title", "Author", "Description"),
-        MBook("2", "Title", "Author", "Description"),
-        MBook("3", "Title", "Author", "Description"),
-        MBook("4", "Title", "Author", "Description"),
-        MBook("5", "Title", "Author", "Description"),
-        MBook("6", "Title", "Author", "Description"),
-        MBook("7", "Title", "Author", "Description"),
-        MBook("8", "Title", "Author", "Description"),
-        MBook("9", "Title", "Author", "Description"),
-        MBook("10", "Title", "Author", "Description"),
-        MBook("11", "Title", "Author", "Description"),
-        MBook("12", "Title", "Author", "Description"),
-        MBook("13", "Title", "Author", "Description"),
-        MBook("14", "Title", "Author", "Description"),
-        MBook("15", "Title", "Author", "Description"),
-        MBook("16", "Title", "Author", "Description"),
-        MBook("17", "Title", "Author", "Description"),
-        MBook("18", "Title", "Author", "Description"),
-        MBook("19", "Title", "Author", "Description"),
-        MBook("20", "Title", "Author", "Description"),
-    )
+fun HomeContent(navController: NavController, viewModel: HomeScreenViewModel) {
+    var listOfBooks = emptyList<MBook>()
+    val currentUser = FirebaseAuth.getInstance().currentUser
+
+    if (viewModel.data.value.data.isNullOrEmpty()) {
+        if (currentUser != null) {
+            listOfBooks = viewModel.data.value.data?.toList()!!.filter { mBook ->
+                mBook.userId == currentUser.uid
+            }
+        }
+    }
+
     val currentUserName =
         if (!FirebaseAuth.getInstance().currentUser?.displayName.isNullOrEmpty()) {
             FirebaseAuth.getInstance().currentUser?.email?.split("@")?.get(0)
@@ -104,7 +94,7 @@ fun HomeContent(navController: NavController) {
 @Composable
 fun BoolListArea(listOfBooks: List<MBook>, navController: NavController) {
     HorizontalScrollableComponent(listOfBooks) {
-        //Todo: Navigate to Book Details
+        navController.navigate(ReaderScreens.UpdateScreen.name + "/$it")
     }
 }
 
@@ -127,7 +117,7 @@ fun HorizontalScrollableComponent(listOfBooks: List<MBook>, onCardPressed: (Stri
 
 
 @Composable
-fun Home(navController: NavController) {
+fun Home(navController: NavController, viewModel: HomeScreenViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             ReaderAppBar(title = "Jet.A.Reader", showProfile = true, navController = navController)
@@ -139,14 +129,16 @@ fun Home(navController: NavController) {
         }) {
         it.calculateBottomPadding()
         Surface(modifier = Modifier.fillMaxSize()) {
-            HomeContent(navController)
+            HomeContent(navController, viewModel)
         }
     }
 }
 
 @Composable
 fun ReadingRightNowArea(books: List<MBook>, navController: NavController) {
-    ListCard(books[0]) {
-
+    for (book in books) {
+        ListCard(book = book) {
+            navController.navigate(ReaderScreens.DetailScreen.name + "/$it")
+        }
     }
 }
