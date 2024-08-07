@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -36,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -47,8 +50,10 @@ import com.demate.jetareader.components.InputField
 import com.demate.jetareader.components.RatingBar
 import com.demate.jetareader.components.ReaderAppBar
 import com.demate.jetareader.components.RounderButton
+import com.demate.jetareader.components.showToast
 import com.demate.jetareader.data.DataOrException
 import com.demate.jetareader.model.MBook
+import com.demate.jetareader.navigation.ReaderScreens
 import com.demate.jetareader.screens.home.HomeScreenViewModel
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -190,6 +195,7 @@ fun ShowSimpleForm(book: MBook, navController: NavHostController) {
                     modifier = Modifier.alpha(0.6f),
                     color = Color.Red.copy(alpha = 0.6f)
                 )
+
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -245,10 +251,13 @@ fun ShowSimpleForm(book: MBook, navController: NavHostController) {
         ).toMap()
 
         RounderButton(label = "Update") {
+            val context = LocalContext.current
             if (bookUpdate) {
                 FirebaseFirestore.getInstance().collection("books").document(book.id.toString())
-                    .update(bookToUpdate).addOnCompleteListener {
-                        Log.d("TAG", "ShowSimpleForm: Updated")
+                    .update(bookToUpdate)
+                    .addOnCompleteListener {
+                        showToast(context, "Book updated")
+                        navController.navigate(ReaderScreens.ReaderHomeScreen.name)
                     }.addOnFailureListener {
                         Log.d("TAG", "ShowSimpleForm: ${it.message}")
                     }
@@ -257,8 +266,49 @@ fun ShowSimpleForm(book: MBook, navController: NavHostController) {
 
         }
         Spacer(modifier = Modifier.width(100.dp))
-        RounderButton(label = "Delete")
+        val openDialog = remember {
+            mutableStateOf(false)
+        }
+        if (openDialog.value) {
+            ShowAlertDialog(
+                title = "are you sure you want to delete this book?",
+                openDialog = openDialog
+            ) {
+                val context = LocalContext.current
+                FirebaseFirestore.getInstance().collection("books").document(book.id.toString())
+                    .delete()
+                    .addOnCompleteListener {
+                        showToast(context, "Book deleted")
+                        navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+                    }.addOnFailureListener {
+                        Log.d("TAG", "ShowSimpleForm: ${it.message}")
+                    }
+            }
+        }
+        RounderButton(label = "Delete") {
+            openDialog.value = true
+        }
     }
+}
+
+@Composable
+fun ShowAlertDialog(
+    title: String,
+    openDialog: MutableState<Boolean>,
+    onYesPressed: @Composable () -> Unit,
+) {
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text(text = title) },
+            text = { /*TODO*/ },
+            confirmButton = { /*TODO*/ },
+            dismissButton = { /*TODO*/ }
+
+        )
+    }
+
+
 }
 
 @Composable

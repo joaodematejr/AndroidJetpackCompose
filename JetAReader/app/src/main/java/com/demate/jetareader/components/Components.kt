@@ -1,6 +1,8 @@
 package com.demate.jetareader.components
 
+import android.content.Context
 import android.view.MotionEvent
+import android.widget.Toast
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -461,12 +463,24 @@ fun ListCard(
                 style = MaterialTheme.typography.bodyLarge
             )
         }
+        val isStartedReading = remember {
+            mutableStateOf(false)
+        }
         Row(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.Bottom,
         ) {
-            RounderButton(label = "Reading", radius = 70, onPress = {})
+            isStartedReading.value = book.startedReading != null
+            RounderButton(
+                label = if (isStartedReading.value) "Reading" else "Not Yet",
+                radius = 70,
+                onPress = {})
         }
     }
+}
+
+
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
