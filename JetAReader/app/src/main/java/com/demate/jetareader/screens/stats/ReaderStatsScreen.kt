@@ -213,6 +213,7 @@ fun BookRow(
                     text = "${book.categories}",
                     overflow = TextOverflow.Clip,
                     fontStyle = FontStyle.Italic,
+                    softWrap = true,
                     style = MaterialTheme.typography.bodySmall
                 )
 
